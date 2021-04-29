@@ -1,0 +1,13 @@
+version: '3'
+services:
+  node:
+    container_name: portfolio_node
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/usr/src/app
+    command: sh -c "yarn start"
+    ports:
+     - "3030:3000"
+    stdin_open: true
