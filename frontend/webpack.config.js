@@ -13,7 +13,8 @@ module.exports = {
         contentBase: path.join(__dirname, 'dist'),
         host: '0.0.0.0',
         inline: true,
-        port: 3000
+        port: 3000,
+        public: 'localhost:3030'
     },
     module: {
         rules: [
