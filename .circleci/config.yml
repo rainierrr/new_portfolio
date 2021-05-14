@@ -28,6 +28,7 @@ jobs:
     executor:
       name: default
     steps:
+      - checkout
       - restore_cache:
           key: v1-portfolio-{{ .Branch }}-dist-{{ checksum "./dist/index.html" }}-{{ checksum "./dist/bundle.js" }}
       - aws-s3/sync:
