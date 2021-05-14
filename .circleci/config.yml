@@ -1,42 +1,56 @@
 version: 2.1
 executors:
-  default:
+  default: &defaults
     working_directory: ~/workspace
     docker:
       - image: circleci/node:14
 orbs:
   aws-s3: circleci/aws-s3@2.0.0
 
+filter_only_master: &filter_only_master
+  filters:
+    branches:
+      only: main
+
 jobs:
-  setup_and_buid:
-    executor:
-      name: default
+  setup:
+    <<: *defaults
     steps:
       - checkout
       - restore_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          name: Restore Yarn Package Cache
+          key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run:
-          name: Install dependencies
+          name: Install Dependencies
           command: yarn install
       - save_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
               - node_modules
+
+      - persist_to_workspace:
+          root: ~/workspace
+          paths:
+            - ./*
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/workspace
       - run:
           name: Build
           command: yarn build
-      - save_cache:
-          key: dependency-cache-dist
+      - persist_to_workspace:
+          root: ~/workspace
           paths:
             - dist
 
   deploy:
-    executor:
-      name: default
+    <<: *defaults
     steps:
-      - checkout
-      - restore_cache:
-          key: dependency-cache-dist
+      - attach_workspace:
+          at: ~/workspace
       - aws-s3/sync:
           from: ./dist/
           to: 's3://rainier.com/'
@@ -44,11 +58,13 @@ workflows:
   version: 2
   build_and_deploy:
     jobs:
-      - setup_and_buid
-      - deploy:
+      - setup
+      - build:
+          <<: *filter_only_master
           requires:
-          - setup_and_buid
-          filters:
-            branches:
-              only:
-                - main
+          - setup
+      - deploy:
+          <<: *filter_only_master
+          requires:
+            - build
+            - setup
