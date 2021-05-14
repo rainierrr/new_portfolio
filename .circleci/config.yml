@@ -1,6 +1,6 @@
 version: 2.1
 executors:
-  default: &defaults
+  default:
     working_directory: ~/workspace
     docker:
       - image: circleci/node:14
@@ -14,7 +14,7 @@ filter_only_main: &filter_only_main
 
 jobs:
   setup:
-    <<: *defaults
+    executor: defualt
     steps:
       - checkout
       - restore_cache:
@@ -33,7 +33,7 @@ jobs:
           paths:
             - ./*
   build:
-    <<: *defaults
+    executor: defualt
     steps:
       - attach_workspace:
           at: ~/workspace
@@ -46,7 +46,7 @@ jobs:
             - dist
 
   deploy:
-    <<: *defaults
+    executor: defualt
     steps:
       - attach_workspace:
           at: ~/workspace
