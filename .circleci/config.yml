@@ -48,3 +48,7 @@ workflows:
       - deploy:
           requires:
           - setup_and_buid
+          filters:
+            branches:
+              only:
+                - main
