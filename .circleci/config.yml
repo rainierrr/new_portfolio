@@ -7,7 +7,7 @@ executors:
 orbs:
   aws-s3: circleci/aws-s3@2.0.0
 
-filter_only_master: &filter_only_master
+filter_only_main: &filter_only_main
   filters:
     branches:
       only: main
@@ -28,7 +28,6 @@ jobs:
           key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
               - node_modules
-
       - persist_to_workspace:
           root: ~/workspace
           paths:
@@ -60,11 +59,11 @@ workflows:
     jobs:
       - setup
       - build:
-          <<: *filter_only_master
+          <<: *filter_only_main
           requires:
           - setup
       - deploy:
-          <<: *filter_only_master
+          <<: *filter_only_main
           requires:
             - build
             - setup
