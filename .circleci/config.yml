@@ -13,14 +13,20 @@ jobs:
       name: default
     steps:
       - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
           command: yarn install
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+              - node_modules
       - run:
           name: Build
           command: yarn build
       - save_cache:
-          key: v1-portfolio-{{ .Branch }}-{{ checksum "./dist/index.html" }}-{{ checksum "./dist/bundle.js" }}
+          key: dependency-cache-dist
           paths:
             - dist
 
@@ -30,7 +36,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: v1-portfolio-{{ .Branch }}-dist-{{ checksum "./dist/index.html" }}-{{ checksum "./dist/bundle.js" }}
+          key: dependency-cache-dist
       - aws-s3/sync:
           from: ./dist/
           to: 's3://rainier.com/'
