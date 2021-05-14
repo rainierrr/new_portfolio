@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./frontend:/usr/src/app
+      - ./:/usr/src/app
     command: sh -c "yarn start"
     ports:
      - "3030:3000"

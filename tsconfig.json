@@ -7,6 +7,9 @@
       "strict": true,
       "moduleResolution": "node",
       "allowSyntheticDefaultImports": true,
+      "noImplicitAny": true,
+      "noImplicitThis": true,
+      "strictNullChecks": true,
       "lib": [
         "es2020",
         "dom"

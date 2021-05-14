@@ -1,18 +1,18 @@
 version: 2.1
 executors:
   default:
-    working_directory: ~/workspace/frontend
-    docker:
-      - image: circleci/node:14
-orbs:
-  aws-cli: circleci/aws-cli@2.0.0
-
-jobs:
-  setup:
     working_directory: ~/workspace
     docker:
       - image: circleci/node:14
+orbs:
+  aws-s3: circleci/aws-s3@2.0.0
+
+jobs:
+  setup:
+    executor:
+      name: default
     steps:
+      - checkout
       - run:
           name: Install dependencies
           command: yarn install
@@ -27,9 +27,9 @@ jobs:
     executor:
       name: default
     steps:
-      - run:
-          name: Deploy
-          command: aws s3 sync ./dist/ s3://rainier.com/
+      - aws-s3/sync:
+          from: ./dist/
+          to: 's3://rainier.com/'
 workflows:
   version: 2
   build_and_deploy:
@@ -38,8 +38,6 @@ workflows:
       - build:
           requires:
           - setup
-      - aws-cli/install
       - deploy:
           requires:
-          - aws-cli/install
           - build
