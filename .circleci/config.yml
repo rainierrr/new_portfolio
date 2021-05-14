@@ -14,7 +14,7 @@ filter_only_main: &filter_only_main
 
 jobs:
   setup:
-    executor: defualt
+    executor: default
     steps:
       - checkout
       - restore_cache:
@@ -33,7 +33,7 @@ jobs:
           paths:
             - ./*
   build:
-    executor: defualt
+    executor: default
     steps:
       - attach_workspace:
           at: ~/workspace
@@ -46,7 +46,7 @@ jobs:
             - dist
 
   deploy:
-    executor: defualt
+    executor: default
     steps:
       - attach_workspace:
           at: ~/workspace
