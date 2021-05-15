@@ -52,7 +52,7 @@ jobs:
           at: ~/workspace
       - aws-s3/sync:
           from: ./dist/
-          to: 's3://rainier.com/'
+          to: 's3://rainierrr.com/'
 workflows:
   version: 2
   build_and_deploy:
