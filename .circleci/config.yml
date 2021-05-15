@@ -32,6 +32,14 @@ jobs:
           root: ~/workspace
           paths:
             - ./*
+  test:
+    executor: default
+    steps:
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          name: ESlint
+          command: yarn lint
   build:
     executor: default
     steps:
@@ -44,7 +52,6 @@ jobs:
           root: ~/workspace
           paths:
             - dist
-
   deploy:
     executor: default
     steps:
@@ -58,12 +65,17 @@ workflows:
   build_and_deploy:
     jobs:
       - setup
+      - test:
+          requires:
+            - setup
       - build:
           <<: *filter_only_main
           requires:
+          - test
           - setup
       - deploy:
           <<: *filter_only_main
           requires:
+            - test
             - build
             - setup
