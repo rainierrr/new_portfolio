@@ -39,7 +39,7 @@ jobs:
           at: ~/workspace
       - run:
           name: ESlint
-          command: yarn lint
+          command: yarn exec eslint --max-warnings=0 --fix ./src/**/*.{ts,tsx}
   build:
     executor: default
     steps:
