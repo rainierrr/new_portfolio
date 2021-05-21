@@ -10,6 +10,9 @@ import Container from '@material-ui/core/Container';
 import Fab from '@material-ui/core/Fab';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Zoom from '@material-ui/core/Zoom';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Home from "./home"
+import Works from "./works"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,7 +67,14 @@ const Header: React.FC<unknown> = () => (
       <Toolbar id="back-to-top-anchor" />
       <Container>
         <Box my={2}>
-          test
+        <div>
+          <Link to="/">Home</Link>
+          <Link to="/works">Works</Link>
+        </div>
+          <Router>
+              <Route exact path="/home" component={Home}></Route>
+              <Route path="/works" component={Works}></Route>
+          </Router>
         </Box>
       </Container>
       <ScrollTop>
