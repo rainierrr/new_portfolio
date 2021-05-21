@@ -5,19 +5,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Fab from '@material-ui/core/Fab';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Zoom from '@material-ui/core/Zoom';
-
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window?: () => Window;
-  children: React.ReactElement;
-}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,6 +20,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
+
+interface Props {
+  window?: () => Window;
+  children: React.ReactElement;
+}
 
 function ScrollTop(props: Props) {
   const { children, window } = props;
@@ -56,17 +53,19 @@ function ScrollTop(props: Props) {
     </Zoom>
   );
 }
-const Header: React.FC<void> = () => (
+const Header: React.FC<unknown> = () => (
     <React.Fragment>
       <CssBaseline />
       <AppBar>
         <Toolbar>
-          <Typography variant="h6">Scroll to see button</Typography>
+          <Typography variant="h6">{ "Rainier's Portfolio" }</Typography>
         </Toolbar>
       </AppBar>
       <Toolbar id="back-to-top-anchor" />
       <Container>
-        test
+        <Box my={2}>
+          test
+        </Box>
       </Container>
       <ScrollTop>
         <Fab color="secondary" size="small" aria-label="scroll back to top">
